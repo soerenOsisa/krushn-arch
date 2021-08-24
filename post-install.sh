@@ -37,11 +37,11 @@ sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sud
 echo -e $pw"\n"$pw | passwd s
 
 # Setup desktop environment
-yes | pacman -S powerline powerline-fonts plasma-desktop konsole plasma-nm sddm
+yes | pacman -S powerline powerline-fonts plasma-desktop konsole plasma-nm sddm dolphin
 systemctl enable sddm
 echo "exec plasma" > ~/.xinitrc
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-echo -e "yes\nsed -i 's/robbyrussell/agnoster/g' ~/.zshrc\nexit" | sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+echo -e "yes\nsed -i 's/robbyrussell/agnoster/g' ~/.zshrc\ncp -r .oh-my-zsh /home/s/\nexit" | sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 exit
