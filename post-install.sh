@@ -33,22 +33,17 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # Create new user
 read -p "select username": user
-useradd -m -G wheel,power,input,storage,uucp,network -s /usr/bin/zsh $user
+useradd -m -g wheel -s /usr/bin/zsh $user
 sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
 echo "Set password for "$user": "
 passwd s
 
-# Setup window manager
-mkdir -p ~/.xmonad
-echo 'import XMonad
-main = xmonad def
-    { terminal    = "xterm"
-    , modMask     = mod4Mask
-    , borderWidth = 3
-    }' > ~/.xmonad/xmonad.hs
+# Setup desktop environment
+pacman -S powerline poweline-fonts plasma-desktop konsole plasma-nm lightdm-gtk-greeter
 systemctl enable lightdm
-echo "exec xmonad" > ~/.xinitrc
-
+echo "exec plasma" > ~/.xinitrc
+sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sed -i 's/robbyrussell/agnoster/g' ~/.zshrc
 
 # Misc
 systemctl enable NetworkManager
