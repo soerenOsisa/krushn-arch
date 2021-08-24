@@ -11,7 +11,7 @@ hwclock --systohc
 # Set locale to en_US.UTF-8 UTF-8
 sed -i '/en_US.UTF-8 UTF-8/s/^#//g' /etc/locale.gen
 locale-gen
-echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 # Set hostname
 read -p "select hostname:" hostname
@@ -19,6 +19,7 @@ echo $hostname > /etc/hostname
 echo "127.0.1.1 "$hostname".local  "$hostname > /etc/hosts
 
 # Generate initramfs
+pacman -S linux linux-firmware
 mkinitcpio -P
 
 # Set root password
