@@ -3,7 +3,7 @@
 # This is Krushn's Arch Linux Installation Script.
 # Visit krushndayshmookh.github.io/krushn-arch for instructions.
 
-echo "Krushn's Arch Installer"
+echo "Arch Installer"
 
 # Set up network connection
 read -p 'Are you connected to internet? [y/N]: ' neton
@@ -14,20 +14,12 @@ then
 fi
 
 # Filesystem mount warning
-echo "This script will create and format the partitions as follows:"
-echo "/dev/sda1 - 512Mib will be mounted as /boot/efi"
-echo "/dev/sda2 - 8GiB will be used as swap"
-echo "/dev/sda3 - rest of space will be mounted as /"
-read -p 'Continue? [y/N]: ' fsok
-if ! [ $fsok = 'y' ] && ! [ $fsok = 'Y' ]
-then 
-    echo "Edit the script to continue..."
-    exit
-fi
+echo $(lsblk)
+read -p "Enter Disk to use:" drive
 
 # to create the partitions programatically (rather than manually)
 # https://superuser.com/a/984637
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk /dev/sda
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk /dev/$drive
   o # clear the in memory partition table
   n # new partition
   p # primary partition
@@ -38,11 +30,6 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk /dev/sda
   p # primary partition
   2 # partion number 2
     # default, start immediately after preceding partition
-  +8G # 8 GB swap parttion
-  n # new partition
-  p # primary partition
-  3 # partion number 3
-    # default, start immediately after preceding partition
     # default, extend partition to end of disk
   a # make a partition bootable
   1 # bootable partition is partition 1 -- /dev/sda1
@@ -52,8 +39,8 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk /dev/sda
 EOF
 
 # Format the partitions
-mkfs.ext4 /dev/sda3
-mkfs.fat -F32 /dev/sda1
+mkfs.ext4 /dev/$drive"2"
+mkfs.fat -F32 /dev/$drive"1"
 
 # Set up time
 timedatectl set-ntp true
@@ -64,16 +51,14 @@ pacman-key --populate archlinux
 pacman-key --refresh-keys
 
 # Mount the partitions
-mount /dev/sda3 /mnt
+mount /dev/$drive"2" /mnt
 mkdir -pv /mnt/boot/efi
-mount /dev/sda1 /mnt/boot/efi
-mkswap /dev/sda2
-swapon /dev/sda2
+mount /dev/$drive"1" /mnt/boot/efi
 
 # Install Arch Linux
 echo "Starting install.."
-echo "Installing Arch Linux, KDE with Konsole and Dolphin and GRUB2 as bootloader" 
-pacstrap /mnt base base-devel zsh grml-zsh-config grub os-prober intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog xorg xorg-server xorg-xinit mesa xf86-video-intel plasma konsole dolphin
+echo "Installing Arch Linux, Xmonad as WM, GRUB2 as bootloader" 
+pacstrap /mnt base base-devel zsh grml-zsh-config grub os-prober networkmanager amd-ucode intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog xorg xorg-server xorg-xinit mesa xf86-video-intel xf86-video-vesa xf86-video-ati xf86-video-amdgpu xf86-video-nouveau xf86-video-fvdev xmonad xmonad-contrib lightdm urxvt dolphin
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -83,10 +68,7 @@ cp -rfv post-install.sh /mnt/root
 chmod a+x /mnt/root/post-install.sh
 
 # Chroot into new system
-echo "After chrooting into newly installed OS, please run the post-install.sh by executing ./post-install.sh"
-echo "Press any key to chroot..."
-read tmpvar
-arch-chroot /mnt /bin/bash
+cat /mnt/root/post-install.sh | arch-chroot /mnt /bin/bash
 
 # Finish
 echo "If post-install.sh was run succesfully, you will now have a fully working bootable Arch Linux system installed."
