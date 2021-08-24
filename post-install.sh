@@ -42,7 +42,7 @@ passwd s
 mkdir -p ~/.xmonad
 echo 'import XMonad
 main = xmonad def
-    { terminal    = "urxvt"
+    { terminal    = "xterm"
     , modMask     = mod4Mask
     , borderWidth = 3
     }' > ~/.xmonad/xmonad.hs
