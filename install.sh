@@ -13,7 +13,7 @@ fi
 # Filesystem
 lsblk
 read -p "Enter Disk to use: " drive
-sfdisk $drive -f -w auto -X dos << EOF
+sfdisk /dev/$drive -f -w auto -X dos << EOF
 ,524288,L,*
 ;
 EOF
