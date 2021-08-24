@@ -1,9 +1,9 @@
 #! /bin/bash
 
 # Set date time
-echo $(ls /usr/share/zoneinfo)
+ls /usr/share/zoneinfo
 read -p "select region:" region
-echo $(ls /usr/share/zoneinfo/$region)
+ls /usr/share/zoneinfo/$region
 read -p "select city:" city
 ln -sf /usr/share/zoneinfo/$region/$city /etc/localtime
 hwclock --systohc
@@ -25,6 +25,9 @@ mkinitcpio -P
 passwd
 
 # Install bootloader
+sed -i "s/TIMEOUT=5/TIMEOUT=0/g" /etc/default/grub
+sed -i "s/TIMEOUT_STYLE=menu/TIMEOUT_STYLE=hidden/g" /etc/default/grub
+sed -i "s/="loglevel=3 quiet"/="loglevel=0 quiet splash"/g" /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch
 grub-mkconfig -o /boot/grub/grub.cfg
 
@@ -47,7 +50,8 @@ systemctl enable lightdm
 echo "exec xmonad" > ~/.xinitrc
 
 
-# Enable services
+# Misc
 systemctl enable NetworkManager
+echo "[[ -f ~/.profile ]] && . ~/.profile" > ~/.bash_profile
 
 exit

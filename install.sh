@@ -14,7 +14,7 @@ then
 fi
 
 # Filesystem mount warning
-echo $(lsblk)
+lsblk
 read -p "Enter Disk to use:" drive
 
 # to create the partitions programatically (rather than manually)
@@ -45,15 +45,14 @@ mkfs.fat -F32 /dev/$drive"1"
 # Set up time
 timedatectl set-ntp true
 
-# Initate pacman keyring
-pacman-key --init
-pacman-key --populate archlinux
-pacman-key --refresh-keys
-
 # Mount the partitions
 mount /dev/$drive"2" /mnt
 mkdir -pv /mnt/boot/efi
 mount /dev/$drive"1" /mnt/boot/efi
+
+#upadate mirrors
+echo "Updating mirrors for faster download speed"
+reflector -a 12 -l 24 -f 12 --sort rate --save /etc/pacman.d/mirrorlist
 
 # Install Arch Linux
 echo "Starting install.."
