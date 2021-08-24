@@ -42,6 +42,8 @@ passwd s
 pacman -S powerline poweline-fonts plasma-desktop konsole plasma-nm lightdm-gtk-greeter
 systemctl enable lightdm
 echo "exec plasma" > ~/.xinitrc
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 sed -i 's/robbyrussell/agnoster/g' ~/.zshrc
 
