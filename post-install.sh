@@ -2,9 +2,9 @@
 
 # Set date time
 ls /usr/share/zoneinfo
-read -p "select region:" region
+read -p "select region: " region
 ls /usr/share/zoneinfo/$region
-read -p "select city:" city
+read -p "select city: " city
 ln -sf /usr/share/zoneinfo/$region/$city /etc/localtime
 hwclock --systohc
 
@@ -14,7 +14,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 # Set hostname
-read -p "select hostname:" hostname
+read -p "select hostname: " hostname
 echo $hostname > /etc/hostname
 echo "127.0.1.1 "$hostname".local  "$hostname > /etc/hosts
 
@@ -36,7 +36,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 read -p "select username": user
 useradd -m -G wheel,power,input,storage,uucp,network -s /usr/bin/zsh $user
 sed --in-place 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
-echo "Set password for "$user":"
+echo "Set password for "$user": "
 passwd s
 
 # Setup window manager

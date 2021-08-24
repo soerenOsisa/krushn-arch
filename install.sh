@@ -13,29 +13,12 @@ then
     exit
 fi
 
-# Filesystem mount warning
+# Filesystem
 lsblk
-read -p "Enter Disk to use:" drive
-
-# to create the partitions programatically (rather than manually)
-# https://superuser.com/a/984637
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | fdisk /dev/$drive
-  o # clear the in memory partition table
-  n # new partition
-  p # primary partition
-  1 # partition number 1
-    # default - start at beginning of disk 
-  +512M # 512 MB boot parttion
-  n # new partition
-  p # primary partition
-  2 # partion number 2
-    # default, start immediately after preceding partition
-    # default, extend partition to end of disk
-  a # make a partition bootable
-  1 # bootable partition is partition 1 -- /dev/sda1
-  p # print the in-memory partition table
-  w # write the partition table
-  q # and we're done
+read -p "Enter Disk to use: " drive
+sfdisk $drive -f -w auto -X dos << EOF
+,524288,L,*
+;
 EOF
 
 # Format the partitions
