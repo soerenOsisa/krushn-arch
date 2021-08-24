@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# This is Krushn's Arch Linux Installation Script.
-# Visit krushndayshmookh.github.io/krushn-arch for instructions.
-
 echo "Arch Installer"
 
 # Set up network connection
@@ -45,12 +42,8 @@ pacstrap /mnt base base-devel linux linux-firmware zsh grml-zsh-config grub os-p
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# Copy post-install system cinfiguration script to new /root
-cp -rfv post-install.sh /mnt/root
-chmod a+x /mnt/root/post-install.sh
-
 # Chroot into new system
-cat /mnt/root/post-install.sh | arch-chroot /mnt /bin/bash
+cat post-install.sh | arch-chroot /mnt /bin/bash
 
 # Finish
 echo "If post-install.sh was run succesfully, you will now have a fully working bootable Arch Linux system installed."

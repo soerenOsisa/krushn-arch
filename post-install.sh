@@ -19,7 +19,6 @@ echo $hostname > /etc/hostname
 echo "127.0.1.1 "$hostname".local  "$hostname > /etc/hosts
 
 # Generate initramfs
-pacman -S linux linux-firmware
 mkinitcpio -P
 
 # Set root password
