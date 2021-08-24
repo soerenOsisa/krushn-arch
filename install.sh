@@ -37,16 +37,13 @@ reflector -a 12 -l 24 -f 12 --sort rate --save /etc/pacman.d/mirrorlist
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, Xmonad as WM, GRUB2 as bootloader" 
-pacstrap /mnt base base-devel linux linux-firmware zsh openssh wget git grub os-prober networkmanager amd-ucode intel-ucode efibootmgr iw wpa_supplicant xorg xf86-video-intel xf86-video-vesa xf86-video-ati xf86-video-amdgpu xf86-video-nouveau xf86-video-fbdev vim neofetch htop#dialog
+pacstrap /mnt base base-devel linux linux-firmware zsh openssh wget git grub os-prober networkmanager amd-ucode intel-ucode efibootmgr iw wpa_supplicant xorg xf86-video-intel xf86-video-vesa xf86-video-ati xf86-video-amdgpu xf86-video-nouveau xf86-video-fbdev vim neofetch htop
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # Chroot into new system
-cp -rfv post-install.sh /mnt/pi
-chmod a+x /mnt/pi
-echo "After chrooting into newly installed OS, please run the post-install.sh by executing 'sh pi'"
-arch-chroot /mnt /bin/bash
+cat post-install.sh | arch-chroot /mnt /bin/bash
 
 # Finish
 echo "If post-install.sh was run succesfully, you will now have a fully working bootable Arch Linux system installed."
