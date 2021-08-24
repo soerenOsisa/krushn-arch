@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # This is Krushn's Arch Linux Installation Script.
 # Visit krushndayshmookh.github.io/krushn-arch for instructions.
