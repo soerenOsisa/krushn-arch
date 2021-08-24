@@ -37,7 +37,7 @@ reflector -a 12 -l 24 -f 12 --sort rate --save /etc/pacman.d/mirrorlist
 # Install Arch Linux
 echo "Starting install.."
 echo "Installing Arch Linux, Xmonad as WM, GRUB2 as bootloader" 
-pacstrap /mnt base base-devel linux linux-firmware zsh grml-zsh-config grub os-prober networkmanager amd-ucode intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog xorg xorg-server xorg-xinit mesa xf86-video-intel xf86-video-vesa xf86-video-ati xf86-video-amdgpu xf86-video-nouveau xf86-video-fvdev xmonad xmonad-contrib lightdm urxvt dolphin
+pacstrap /mnt base base-devel linux linux-firmware zsh grml-zsh-config grub os-prober networkmanager amd-ucode intel-ucode efibootmgr dosfstools freetype2 fuse2 mtools iw wpa_supplicant dialog xorg xorg-xinit mesa xf86-video-intel xf86-video-vesa xf86-video-ati xf86-video-amdgpu xf86-video-nouveau xf86-video-fbdev xmonad xmonad-contrib lightdm urxvt dolphin
 
 # Generate fstab
 genfstab -U /mnt >> /mnt/etc/fstab
