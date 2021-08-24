@@ -39,8 +39,8 @@ echo "Set password for "$user": "
 passwd s
 
 # Setup desktop environment
-pacman -S powerline poweline-fonts plasma-desktop konsole plasma-nm lightdm-gtk-greeter
-systemctl enable lightdm
+pacman -S powerline poweline-fonts plasma-desktop konsole plasma-nm sddm
+systemctl enable sddm
 echo "exec plasma" > ~/.xinitrc
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
